@@ -29,7 +29,10 @@ public class BackupItemsFetcher {
 
     public @NonNull Cursor getItemsForDataType(DataType dataType, ContactGroupIds group, int max) {
         if (LOCAL_LOGV) Log.v(TAG, "getItemsForDataType(type=" + dataType + ", max=" + max + ")");
-        return performQuery(queryBuilder.buildQueryForDataType(dataType, group, max));
+        switch (dataType) {
+            case WHATSAPP: return new WhatsAppItemsFetcher(context).getItems(DataType.WHATSAPP.getMaxSyncedDate(context), max);
+            default: return performQuery(queryBuilder.buildQueryForDataType(dataType, group, max));
+        }
     }
 
     /**
@@ -39,7 +42,10 @@ public class BackupItemsFetcher {
      * @throws SecurityException if app does not hold necessary permissions
      */
     public long getMostRecentTimestamp(DataType dataType) {
-        return getMostRecentTimestampForQuery(queryBuilder.buildMostRecentQueryForDataType(dataType));
+        switch (dataType) {
+            case WHATSAPP: return new WhatsAppItemsFetcher(context).getMostRecentTimestamp();
+            default: return getMostRecentTimestampForQuery(queryBuilder.buildMostRecentQueryForDataType(dataType));
+        }
     }
 
     private long getMostRecentTimestampForQuery(BackupQueryBuilder.Query query) {

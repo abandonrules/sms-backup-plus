@@ -294,6 +294,22 @@ public class Preferences {
         new AuthPreferences(context).migrate();
     }
 
+    boolean isWhatsAppInstalled() {
+        try {
+            context.getPackageManager().getPackageInfo(
+                    "com.whatsapp",
+                    PackageManager.GET_META_DATA);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    public boolean isWhatsAppInstalledAndPrefNotSet() {
+        return isWhatsAppInstalled() && !preferences.contains(DataType.WHATSAPP.backupEnabledPreference);
+    }
+
     static <T extends Enum<T>> T getDefaultType(SharedPreferences preferences, String pref, Class<T> tClazz, T defaultType) {
         try {
             final String s = preferences.getString(pref, null);

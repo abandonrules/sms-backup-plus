@@ -1,6 +1,7 @@
 package com.zegoggles.smssync.mail;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.provider.CallLog;
 import android.provider.Telephony;
@@ -15,6 +16,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.TextBody;
+import com.github.jberkel.whassup.model.WhatsAppMessage;
 import com.zegoggles.smssync.Consts;
 import com.zegoggles.smssync.contacts.ContactGroupIds;
 import com.zegoggles.smssync.preferences.AddressStyle;
@@ -22,6 +24,7 @@ import com.zegoggles.smssync.preferences.CallLogTypes;
 import com.zegoggles.smssync.preferences.DataTypePreferences;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -29,6 +32,8 @@ import static com.fsck.k9.mail.internet.MimeMessageHelper.setBody;
 import static com.zegoggles.smssync.App.LOCAL_LOGV;
 import static com.zegoggles.smssync.App.TAG;
 import static com.zegoggles.smssync.Consts.MMS_PART;
+import static com.zegoggles.smssync.mail.Attachment.createPartFromFile;
+import static com.zegoggles.smssync.mail.Attachment.createTextPart;
 
 class MessageGenerator {
     private static final String ERROR_PARSING_DATE = "error parsing date";
@@ -201,6 +206,50 @@ class MessageGenerator {
             sentDate = new Date();
         }
         headerGenerator.setHeaders(msg, msgMap, DataType.CALLLOG, address, record, sentDate, callType);
+        return msg;
+    }
+
+    public @Nullable Message messageFromMapWhatsApp(Cursor cursor) throws MessagingException {
+        WhatsAppMessage whatsapp = new WhatsAppMessage(cursor);
+        // we don't deal with group messages (yet)
+        if (whatsapp.isGroupMessage()) return null;
+        final String address = whatsapp.getNumber();
+        if (TextUtils.isEmpty(address)) {
+            return null;
+        }
+        PersonRecord record = mPersonLookup.lookupPerson(address);
+        if (!includePersonInBackup(record, DataType.WHATSAPP)) return null;
+
+        final Message msg = new MimeMessage();
+
+        if (whatsapp.hasMediaAttached()) {
+            MimeMultipart body = new MimeMultipart();
+            if (whatsapp.hasText()) {
+                body.addBodyPart(createTextPart(whatsapp.getFilteredText()));
+            }
+            body.addBodyPart(createPartFromFile(whatsapp.getMedia().getFile(), whatsapp.getMedia().getMimeType()));
+            setBody(msg, body);
+        } else if (whatsapp.hasText()) {
+            setBody(msg, new TextBody(whatsapp.getFilteredText()));
+        } else {
+            // no media / no text, pointless
+            return null;
+        }
+        msg.setSubject(getSubject(DataType.WHATSAPP, record));
+
+        if (whatsapp.isReceived()) {
+            // Received message
+            msg.setFrom(record.getAddress(mAddressStyle));
+            msg.setRecipient(Message.RecipientType.TO, mUserAddress);
+        } else {
+            // Sent message
+            msg.setRecipient(Message.RecipientType.TO, record.getAddress(mAddressStyle));
+            msg.setFrom(mUserAddress);
+        }
+        mHeaderGenerator.setHeaders(msg, new HashMap<String, String>(), DataType.WHATSAPP, address, record,
+                whatsapp.getTimestamp(), whatsapp.getStatus()
+        );
+        msg.setUsing7bitTransport();
         return msg;
     }
 

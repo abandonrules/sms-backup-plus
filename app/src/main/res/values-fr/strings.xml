@@ -98,8 +98,16 @@
   <string name="ui_backup_calllog_label">Sauvegarde du journal d\'appels</string>
   <string name="ui_backup_calllog_desc">Activer la sauvegarde du journal d\'appels</string>
 
+<<<<<<< HEAD:app/src/main/res/values-fr/strings.xml
   <string name="ui_backup_calllog_sync_calendar_enabled_label">Synchroniser avec le calendrier</string>
   <string name="ui_backup_calllog_sync_calendar_enabled_desc">Ajouter les entrées du journal d\'appels au calendrier</string>
+=======
+  <string name="ui_backup_whatsapp_label">Sauvegarder WhatsApp</string>
+  <string name="ui_backup_whatsapp_desc">Activer la sauvegarde de WhatsApp</string>
+
+  <string name="ui_backup_calllog_sync_calendar_enabled_label">Synchroniser au calendrier</string>
+  <string name="ui_backup_calllog_sync_calendar_enabled_desc">Ajouter les entrées du journal d\'appel au calendrier</string>
+>>>>>>> parent of 24b549e... Remove whatsapp for real:res/values-fr/strings.xml
 
   <string name="ui_backup_calllog_types_label">Types d\'appels</string>
   <string name="ui_backup_calllog_types_desc">Types d\'appels à sauvegarder.</string>
@@ -110,6 +118,10 @@
   <string name="ui_imap_folder_calllog_label">Libellé du journal d\'appels</string>
   <string name="ui_imap_folder_calllog_desc">Libellé Gmail pour les appels.</string>
   <string name="ui_imap_folder_calllog_label_dialog_msg">Les appels sauvegardées seront classés avec ce libellé dans Gmail.</string>
+
+  <string name="ui_imap_folder_whatsapp_label">Libellé WhatsApp</string>
+  <string name="ui_imap_folder_whatsapp_desc">Libellé Gmail associé à WhatsApp</string>
+  <string name="ui_imap_folder_whatsapp_label_dialog_msg">Les messages WhatsApp sauvegardés seront classés avec ce libelé dans Gmail.</string>
 
   <string name="ui_mark_as_read_label">Marquer comme lus (e-mails)</string>
   <string name="ui_mark_as_read_desc">Définir si les messages (dans Gmail) seront inscrits comme étant lus ou non.</string>
@@ -192,6 +204,7 @@
   <string name="call_duration_field">Durée : %1$s</string>
 
   <string name="sms_with_field">SMS avec %1$s</string>
+  <string name="whatsapp_with_field">Discussion WhatsApp avec %1$s</string>
   <!-- the subject line needs to be identical otherwise threading will be messed up -->
   <string name="call_with_field">Appel avec %1$s</string>
 
@@ -241,7 +254,12 @@
 
   <string name="sms">SMS</string>
   <string name="mms">MMS</string>
+<<<<<<< HEAD:app/src/main/res/values-fr/strings.xml
   <string name="calllog">Journal d\'appels</string>
+=======
+  <string name="calllog">Journal d\'appel</string>
+  <string name="whatsapp">WhatsApp</string>
+>>>>>>> parent of 24b549e... Remove whatsapp for real:res/values-fr/strings.xml
 
   <string name="app_log_skip_backup_already_running">Ignoré car une sauvegarde est déjà en cours</string>
   <string name="app_log_skip_backup_skip_messages">Ignorer tous les messages</string>
