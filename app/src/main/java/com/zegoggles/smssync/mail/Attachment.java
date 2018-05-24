@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
+
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.Base64OutputStream;
@@ -29,7 +30,8 @@ class Attachment {
     private static final String RFC2231_SPECIALS = "*'%" + MIME_SPECIALS;
     private static final char[] HEX_DIGITS = "0123456789ABCDEF".toCharArray();
 
-    private Attachment() {}
+    private Attachment() {
+    }
 
     public static MimeBodyPart createTextPart(String text) throws MessagingException {
         return new MimeBodyPart(new TextBody(text));
@@ -64,7 +66,7 @@ class Attachment {
         @Override
         public void writeTo(OutputStream outputStream) throws IOException, MessagingException {
             InputStream in = getInputStream();
-            if (in != null)  {
+            if (in != null) {
                 Base64OutputStream base64Out = new Base64OutputStream(outputStream);
                 IOUtils.copy(in, base64Out);
                 base64Out.close();
@@ -118,7 +120,6 @@ class Attachment {
 
         @Override
         public void setEncoding(String s) throws MessagingException {
-
         }
     }
 

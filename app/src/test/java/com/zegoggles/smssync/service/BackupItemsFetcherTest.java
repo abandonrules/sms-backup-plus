@@ -37,9 +37,7 @@ public class BackupItemsFetcherTest {
         initMocks(this);
         context = RuntimeEnvironment.application;
         preferences = new Preferences(context);
-        fetcher = new BackupItemsFetcher(
-                resolver,
-                queryBuilder);
+        fetcher = new BackupItemsFetcher(context, preferences.getDataTypePreferences(), queryBuilder);
     }
 
     @Test public void shouldGetItemsForDataType() throws Exception {

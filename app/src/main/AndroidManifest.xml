@@ -38,6 +38,11 @@
     <uses-permission android:name="android.permission.USE_CREDENTIALS"
                      android:maxSdkVersion="22"/>
 
+    <!-- Allows the app to read from the SD card.
+    -->
+    <!-- android.permission-group.STORAGE -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <!-- Allows the app to write to the SD card.
          Beginning with Android 4.4 (API level 19), it's no longer necessary for your app to request the
          WRITE_EXTERNAL_STORAGE permission when your app wants to write to its own application-specific directories

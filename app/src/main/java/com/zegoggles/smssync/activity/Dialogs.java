@@ -30,9 +30,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.TextView;
+
 import com.squareup.otto.Subscribe;
 import com.zegoggles.smssync.App;
 import com.zegoggles.smssync.R;
@@ -49,7 +52,6 @@ import static android.R.drawable.ic_dialog_info;
 import static android.R.string.cancel;
 import static android.R.string.ok;
 import static android.R.string.yes;
-import static android.app.ProgressDialog.STYLE_SPINNER;
 import static android.content.DialogInterface.BUTTON_NEGATIVE;
 import static com.zegoggles.smssync.activity.MainActivity.REQUEST_CHANGE_DEFAULT_SMS_PACKAGE;
 import static com.zegoggles.smssync.activity.MainActivity.REQUEST_WEB_AUTH;
@@ -226,15 +228,14 @@ public class Dialogs {
     public static class AccessTokenProgress extends BaseFragment {
         @Override @NonNull
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // NB: progress dialog is not AppCompat-ready, and will not appear themed
-            //     correctly on older devices
-            ProgressDialog progress = new ProgressDialog(getContext());
-            progress.setTitle(null);
-            progress.setProgressStyle(STYLE_SPINNER);
-            progress.setMessage(getString(R.string.ui_dialog_access_token_msg));
-            progress.setIndeterminate(true);
-            progress.setCancelable(false);
-            return progress;
+            View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.progress_dialog, null);
+            TextView txt = dialogView.findViewById(R.id.loading_txt);
+            txt.setText(R.string.ui_dialog_access_token_msg);
+
+            return new AlertDialog.Builder(getContext())
+                    .setView(dialogView)
+                    .setCancelable(false)
+                    .create();
         }
     }
 

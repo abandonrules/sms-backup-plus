@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.util.Log;
 import com.github.jberkel.whassup.Whassup;
 import com.zegoggles.smssync.mail.DataType;
+import android.support.annotation.NonNull;
 
 import java.io.IOException;
 
@@ -14,15 +15,15 @@ import static com.zegoggles.smssync.service.BackupItemsFetcher.emptyCursor;
 public class WhatsAppItemsFetcher {
     private Whassup whassup;
 
-    public WhatsAppItemsFetcher(Context context) {
+    WhatsAppItemsFetcher(Context context) {
         this(new Whassup(context));
     }
 
-    protected WhatsAppItemsFetcher(Whassup whassup) {
+    WhatsAppItemsFetcher(Whassup whassup) {
         this.whassup = whassup;
     }
 
-    public Cursor getItems(long maxSyncedDate, int max) {
+    public @NonNull Cursor getItems(long maxSyncedDate, int max) {
         if (LOCAL_LOGV) Log.v(TAG, "getItems(max=" + max + ")");
 
         if (!whassup.hasBackupDB()) {

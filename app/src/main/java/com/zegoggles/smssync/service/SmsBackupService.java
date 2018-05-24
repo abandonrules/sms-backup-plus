@@ -16,6 +16,8 @@
 
 package com.zegoggles.smssync.service;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -290,7 +292,18 @@ public class SmsBackupService extends ServiceBase {
     }
 
     private NotificationCompat.Builder notificationBuilder(int icon, String title, String text) {
-        return new NotificationCompat.Builder(this)
+        NotificationCompat.Builder builder;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel notificationChannel = new NotificationChannel("sms_channel", title, importance);
+            getNotifier().createNotificationChannel(notificationChannel);
+            builder = new NotificationCompat.Builder(this, notificationChannel.getId());
+        } else {
+            //noinspection deprecation
+            builder = new NotificationCompat.Builder(this);
+        }
+
+        return builder
             .setSmallIcon(icon)
             .setWhen(System.currentTimeMillis())
             .setOnlyAlertOnce(true)

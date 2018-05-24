@@ -63,7 +63,7 @@ class BackupTask extends AsyncTask<BackupConfig, BackupState, BackupState> {
         this.preferences = service.getPreferences();
 
         this.fetcher = new BackupItemsFetcher(context,
-                context.getContentResolver(),
+                preferences.getDataTypePreferences(),
                 new BackupQueryBuilder(preferences.getDataTypePreferences()));
 
         PersonLookup personLookup = new PersonLookup(service.getContentResolver());
