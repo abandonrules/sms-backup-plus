@@ -295,14 +295,7 @@ public class Preferences {
     }
 
     boolean isWhatsAppInstalled() {
-        try {
-            context.getPackageManager().getPackageInfo(
-                    "com.whatsapp",
-                    PackageManager.GET_META_DATA);
             return true;
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
-        }
     }
 
     @SuppressWarnings("UnusedDeclaration")

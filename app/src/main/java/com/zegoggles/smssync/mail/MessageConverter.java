@@ -115,10 +115,10 @@ public class MessageConverter {
         final Message m;
         switch (dataType) {
             case WHATSAPP:
-                m = mMessageGenerator.messageFromMapWhatsApp(cursor);
+                m = messageGenerator.messageFromMapWhatsApp(cursor);
                 break;
             default:
-                m = mMessageGenerator.messageForDataType(msgMap, dataType);
+                m = messageGenerator.messageForDataType(msgMap, dataType);
                 break;
         }
         final ConversionResult result = new ConversionResult(dataType);

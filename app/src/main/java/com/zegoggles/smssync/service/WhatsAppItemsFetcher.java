@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.util.Log;
 import com.github.jberkel.whassup.Whassup;
 import com.zegoggles.smssync.mail.DataType;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
@@ -23,7 +22,7 @@ public class WhatsAppItemsFetcher {
         this.whassup = whassup;
     }
 
-    public @NotNull Cursor getItems(long maxSyncedDate, int max) {
+    public Cursor getItems(long maxSyncedDate, int max) {
         if (LOCAL_LOGV) Log.v(TAG, "getItems(max=" + max + ")");
 
         if (!whassup.hasBackupDB()) {

@@ -217,13 +217,13 @@ class MessageGenerator {
         if (TextUtils.isEmpty(address)) {
             return null;
         }
-        PersonRecord record = mPersonLookup.lookupPerson(address);
+        PersonRecord record = personLookup.lookupPerson(address);
         if (!includePersonInBackup(record, DataType.WHATSAPP)) return null;
 
         final Message msg = new MimeMessage();
 
         if (whatsapp.hasMediaAttached()) {
-            MimeMultipart body = new MimeMultipart();
+            MimeMultipart body = MimeMultipart.newInstance();
             if (whatsapp.hasText()) {
                 body.addBodyPart(createTextPart(whatsapp.getFilteredText()));
             }
@@ -239,17 +239,16 @@ class MessageGenerator {
 
         if (whatsapp.isReceived()) {
             // Received message
-            msg.setFrom(record.getAddress(mAddressStyle));
-            msg.setRecipient(Message.RecipientType.TO, mUserAddress);
+            msg.setFrom(record.getAddress(addressStyle));
+            msg.setRecipient(Message.RecipientType.TO, userAddress);
         } else {
             // Sent message
-            msg.setRecipient(Message.RecipientType.TO, record.getAddress(mAddressStyle));
-            msg.setFrom(mUserAddress);
+            msg.setRecipient(Message.RecipientType.TO, record.getAddress(addressStyle));
+            msg.setFrom(userAddress);
         }
-        mHeaderGenerator.setHeaders(msg, new HashMap<String, String>(), DataType.WHATSAPP, address, record,
+        headerGenerator.setHeaders(msg, new HashMap<String, String>(), DataType.WHATSAPP, address, record,
                 whatsapp.getTimestamp(), whatsapp.getStatus()
         );
-        msg.setUsing7bitTransport();
         return msg;
     }
 
