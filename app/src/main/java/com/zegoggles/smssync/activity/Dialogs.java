@@ -17,7 +17,6 @@ package com.zegoggles.smssync.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -226,6 +225,7 @@ public class Dialogs {
     }
 
     public static class AccessTokenProgress extends BaseFragment {
+        @SuppressWarnings("deprecation")
         @Override @NonNull
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.progress_dialog, null);

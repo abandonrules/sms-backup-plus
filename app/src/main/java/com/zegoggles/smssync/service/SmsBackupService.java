@@ -176,6 +176,7 @@ public class SmsBackupService extends ServiceBase {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private void legacyCheckConnectivity() throws ConnectivityException {
         NetworkInfo active = getConnectivityManager().getActiveNetworkInfo();
         if (active == null || !active.isConnectedOrConnecting()) {
@@ -291,6 +292,7 @@ public class SmsBackupService extends ServiceBase {
         getNotifier().notify(notificationId, builder.build());
     }
 
+    @SuppressWarnings("deprecation")
     private NotificationCompat.Builder notificationBuilder(int icon, String title, String text) {
         NotificationCompat.Builder builder;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {

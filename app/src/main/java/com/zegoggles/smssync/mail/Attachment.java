@@ -2,6 +2,7 @@ package com.zegoggles.smssync.mail;
 
 import android.content.ContentResolver;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -37,7 +38,7 @@ class Attachment {
         return new MimeBodyPart(new TextBody(text));
     }
 
-    static MimeBodyPart createPartFromUri(ContentResolver resolver, Uri uri, String filename, String contentType) throws MessagingException {
+    static MimeBodyPart createPartFromUri(@NonNull ContentResolver resolver, @NonNull Uri uri, String filename, String contentType) throws MessagingException {
         return createPart(new ResolverBody(resolver, uri), filename, contentType);
     }
 
@@ -80,7 +81,7 @@ class Attachment {
         private ContentResolver resolver;
         private Uri uri;
 
-        ResolverBody(ContentResolver contentResolver, Uri uri) {
+        ResolverBody(@NonNull ContentResolver contentResolver, @NonNull Uri uri) {
             resolver = contentResolver;
             this.uri = uri;
         }
