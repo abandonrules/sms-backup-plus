@@ -118,6 +118,9 @@
   <string name="ui_backup_calllog_label">Backup Call log</string>
   <string name="ui_backup_calllog_desc">Enable Call log backup</string>
 
+  <string name="ui_backup_whatsapp_label">Backup WhatsApp</string>
+  <string name="ui_backup_whatsapp_desc">Enable WhatsApp backup</string>
+
   <string name="ui_backup_calllog_sync_calendar_enabled_label">Calendar sync</string>
   <string name="ui_backup_calllog_sync_calendar_enabled_desc">Add call log entries to calendar</string>
 
@@ -133,6 +136,10 @@
 
   <string name="ui_backup_calllog_after_call_label">Backup after call</string>
   <string name="ui_backup_calllog_after_call_desc">Automatically backup after incoming/outgoing call (uses Incoming schedule).</string>
+
+  <string name="ui_imap_folder_whatsapp_label">WhatsApp label</string>
+  <string name="ui_imap_folder_whatsapp_desc">Gmail label assigned to WhatsApp.</string>
+  <string name="ui_imap_folder_whatsapp_label_dialog_msg">Backed up WhatsApp messages will be tagged with this label in Gmail.</string>
 
   <string name="ui_mark_as_read_label">Mark as read (emails)</string>
   <string name="ui_mark_as_read_desc">Whether to mark messages in Gmail as read or not.</string>
@@ -225,6 +232,8 @@
 
   <string name="sms_with_field">SMS with %1$s</string>
   <string name="mms_with_field" translatable="false">@string/sms_with_field</string>
+  <string name="whatsapp_with_field">WhatsApp chat with %1$s</string>
+  <!-- the subject line needs to be identical otherwise threading will be messed up -->
   <string name="call_with_field">Call with %1$s</string>
 
   <string name="ui_backup_contact_group_label">Contacts to backup</string>
@@ -278,6 +287,7 @@
   <string name="sms">SMS</string>
   <string name="mms">MMS</string>
   <string name="calllog">Call log</string>
+  <string name="whatsapp">WhatsApp</string>
 
 
 

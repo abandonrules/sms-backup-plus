@@ -17,6 +17,7 @@ package com.zegoggles.smssync.service;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -180,7 +181,18 @@ public abstract class ServiceBase extends Service {
 
     @SuppressWarnings("deprecation")
     @NonNull NotificationCompat.Builder createNotification(int resId) {
-        return new NotificationCompat.Builder(this)
+        NotificationCompat.Builder builder;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel notificationChannel = new NotificationChannel("sms_channel", getString(resId), importance);
+            getNotifier().createNotificationChannel(notificationChannel);
+            builder = new NotificationCompat.Builder(getApplicationContext(), notificationChannel.getId());
+        } else {
+            //noinspection deprecation
+            builder = new NotificationCompat.Builder(getApplicationContext());
+        }
+
+        return builder
             .setSmallIcon(R.drawable.ic_notification)
             .setTicker(getString(resId))
             .setWhen(System.currentTimeMillis())

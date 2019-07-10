@@ -37,6 +37,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.zegoggles.smssync.mail.DataType.CALLLOG;
 import static com.zegoggles.smssync.mail.DataType.MMS;
 import static com.zegoggles.smssync.mail.DataType.SMS;
+import static com.zegoggles.smssync.mail.DataType.WHATSAPP;
 import static com.zegoggles.smssync.service.BackupItemsFetcher.emptyCursor;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -151,6 +152,7 @@ public class BackupTaskTest {
         verify(store).getFolder(SMS, dataTypePreferences);
         verify(store, never()).getFolder(MMS, dataTypePreferences);
         verify(store, never()).getFolder(CALLLOG, dataTypePreferences);
+        verify(store, never()).getFolder(WHATSAPP, dataTypePreferences);
     }
 
     @Test public void shouldCloseImapFolderAfterBackup() throws Exception {

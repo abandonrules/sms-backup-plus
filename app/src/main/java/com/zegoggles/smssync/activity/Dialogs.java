@@ -29,9 +29,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.TextView;
+
 import com.squareup.otto.Subscribe;
 import com.zegoggles.smssync.App;
 import com.zegoggles.smssync.R;
@@ -225,15 +228,14 @@ public class Dialogs {
         @SuppressWarnings("deprecation")
         @Override @NonNull
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // NB: progress dialog is not AppCompat-ready, and will not appear themed
-            //     correctly on older devices
-            android.app.ProgressDialog progress = new android.app.ProgressDialog(getContext());
-            progress.setTitle(null);
-            progress.setProgressStyle(android.app.ProgressDialog.STYLE_SPINNER);
-            progress.setMessage(getString(R.string.ui_dialog_access_token_msg));
-            progress.setIndeterminate(true);
-            progress.setCancelable(false);
-            return progress;
+            View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.progress_dialog, null);
+            TextView txt = dialogView.findViewById(R.id.loading_txt);
+            txt.setText(R.string.ui_dialog_access_token_msg);
+
+            return new AlertDialog.Builder(getContext())
+                    .setView(dialogView)
+                    .setCancelable(false)
+                    .create();
         }
     }
 

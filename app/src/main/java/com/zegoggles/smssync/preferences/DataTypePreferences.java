@@ -70,10 +70,11 @@ public class DataTypePreferences implements SharedPreferences.OnSharedPreference
     }
 
     public long getMostRecentSyncedDate() {
-        return Math.max(Math.max(
+        return Math.max(Math.max(Math.max(
             getMaxSyncedDate(DataType.SMS),
             getMaxSyncedDate(DataType.CALLLOG)),
-            getMaxSyncedDate(DataType.MMS));
+            getMaxSyncedDate(DataType.MMS)),
+            getMaxSyncedDate(DataType.WHATSAPP));
     }
 
     public void clearLastSyncData() {

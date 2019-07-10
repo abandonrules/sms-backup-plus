@@ -271,8 +271,13 @@
   <string name="sms">SMS</string>
   <string name="mms">MMS</string>
   <string name="calllog">통화 기록</string>
-
-
+  <string name="whatsapp">WhatsApp</string>
+  <string name="ui_backup_whatsapp_label">WhatsApp 메시지 백업</string>
+  <string name="ui_backup_whatsapp_desc">WhatsApp 메시지 백업 활성화</string>
+  <string name="ui_imap_folder_whatsapp_label">WhatsApp 라벨</string>
+  <string name="ui_imap_folder_whatsapp_desc">Gmail 라벨에 WhatsApp을 할당.</string>
+  <string name="ui_imap_folder_whatsapp_label_dialog_msg">백업된 WhatsApp 메시지들은 Gmail에 이 라벨로 태그 될 것입니다.</string>
+  <string name="whatsapp_with_field">%1$s 와 WhatsApp 채팅</string>
 
   <string name="app_log_skip_backup_already_running">백업이 이미 실행 중이므로 건너뜀</string>
   <string name="app_log_skip_backup_skip_messages">모든 메시지 건너뛰기</string>

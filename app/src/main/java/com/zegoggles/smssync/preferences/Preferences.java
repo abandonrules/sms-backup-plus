@@ -18,9 +18,11 @@ package com.zegoggles.smssync.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 import android.support.annotation.StyleRes;
 import android.util.Log;
+
 import com.zegoggles.smssync.App;
 import com.zegoggles.smssync.R;
 import com.zegoggles.smssync.contacts.ContactGroup;
@@ -63,7 +65,7 @@ public class Preferences {
 
     public Preferences(Context context) {
         this(context.getApplicationContext(),
-             PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()));
+                PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()));
     }
 
     public Preferences(Context context, SharedPreferences preferences) {
@@ -75,12 +77,12 @@ public class Preferences {
     public enum Keys {
         ENABLE_AUTO_BACKUP("enable_auto_sync"),
         INCOMING_TIMEOUT_SECONDS("auto_backup_incoming_schedule"),
-        REGULAR_TIMEOUT_SECONDS ("auto_backup_schedule"),
+        REGULAR_TIMEOUT_SECONDS("auto_backup_schedule"),
         MAX_ITEMS_PER_SYNC("max_items_per_sync"),
-        MAX_ITEMS_PER_RESTORE ("max_items_per_restore"),
-        CALLLOG_SYNC_CALENDAR ("backup_calllog_sync_calendar"),
-        CALLLOG_SYNC_CALENDAR_ENABLED ("backup_calllog_sync_calendar_enabled"),
-        CALLLOG_BACKUP_AFTER_CALL ("backup_calllog_after_call"),
+        MAX_ITEMS_PER_RESTORE("max_items_per_restore"),
+        CALLLOG_SYNC_CALENDAR("backup_calllog_sync_calendar"),
+        CALLLOG_SYNC_CALENDAR_ENABLED("backup_calllog_sync_calendar_enabled"),
+        CALLLOG_BACKUP_AFTER_CALL("backup_calllog_after_call"),
         BACKUP_CONTACT_GROUP("backup_contact_group"),
         CONNECTED("connected"),
         WIFI_ONLY("wifi_only"),
@@ -106,20 +108,24 @@ public class Preferences {
         EMAIL_ADDRESS_STYLE("email_address_style");
 
         public final String key;
+
         Keys(String key) {
             this.key = key;
         }
     }
+
     private static final String CALLLOG_TYPES = "backup_calllog_types";
 
-    public DataTypePreferences getDataTypePreferences() { return dataTypePreferences; }
+    public DataTypePreferences getDataTypePreferences() {
+        return dataTypePreferences;
+    }
 
     public boolean isAppLogEnabled() {
         return preferences.getBoolean(APP_LOG.key, false);
     }
 
     public boolean isAppLogDebug() {
-        return  isAppLogEnabled() &&
+        return isAppLogEnabled() &&
                 preferences.getBoolean(APP_LOG_DEBUG.key, false);
     }
 
@@ -129,7 +135,7 @@ public class Preferences {
 
     public boolean isCallLogCalendarSyncEnabled() {
         return getCallLogCalendarId() >= 0 &&
-                    preferences.getBoolean(CALLLOG_SYNC_CALENDAR_ENABLED.key, false);
+                preferences.getBoolean(CALLLOG_SYNC_CALENDAR_ENABLED.key, false);
     }
 
     public boolean isCallLogBackupAfterCallEnabled() {
@@ -140,7 +146,7 @@ public class Preferences {
         return getStringAsInt(CALLLOG_SYNC_CALENDAR, -1);
     }
 
-    public  CallLogTypes getCallLogType() {
+    public CallLogTypes getCallLogType() {
         return getDefaultType(preferences, CALLLOG_TYPES, CallLogTypes.class, CallLogTypes.EVERYTHING);
     }
 
@@ -253,9 +259,9 @@ public class Preferences {
 
     public void reset() {
         preferences.edit()
-            .remove(SMS_DEFAULT_PACKAGE_CHANGE_SEEN.key)
-            .remove(SMS_DEFAULT_PACKAGE.key)
-            .commit();
+                .remove(SMS_DEFAULT_PACKAGE_CHANGE_SEEN.key)
+                .remove(SMS_DEFAULT_PACKAGE.key)
+                .commit();
     }
 
     public boolean isNotificationEnabled() {
@@ -285,7 +291,8 @@ public class Preferences {
         preferences.edit().putBoolean(USE_OLD_SCHEDULER.key, enabled).commit();
     }
 
-    public @StyleRes int getAppTheme() {
+    public @StyleRes
+    int getAppTheme() {
         final boolean darkMode = preferences.getBoolean(DARK_THEME.key, false);
         return darkMode ? R.style.SMSBackupPlusTheme_Dark : R.style.SMSBackupPlusTheme_Light;
     }

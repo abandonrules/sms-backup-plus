@@ -37,9 +37,7 @@ public class BackupItemsFetcherTest {
         initMocks(this);
         context = RuntimeEnvironment.application;
         preferences = new Preferences(context);
-        fetcher = new BackupItemsFetcher(
-                resolver,
-                queryBuilder);
+        fetcher = new BackupItemsFetcher(context, preferences.getDataTypePreferences(), queryBuilder);
     }
 
     @Test public void shouldGetItemsForDataType() throws Exception {
@@ -87,6 +85,11 @@ public class BackupItemsFetcherTest {
     @Test public void shouldGetMostRecentTimestampForItemTypeCallLog() throws Exception {
         mockMostRecentTimestampForType(CALLLOG, 23L);
         assertThat(fetcher.getMostRecentTimestamp(CALLLOG)).isEqualTo(23L);
+    }
+
+    @Test public void shouldGetMostRecentTimestampForItemTypeWhatsApp() throws Exception {
+        assertThat(fetcher.getMostRecentTimestamp(WHATSAPP)).isEqualTo(-1);
+        verifyZeroInteractions(queryBuilder);
     }
 
     private void mockMostRecentTimestampForType(DataType type, long max) {

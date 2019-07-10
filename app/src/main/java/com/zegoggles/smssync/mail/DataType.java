@@ -3,6 +3,7 @@ package com.zegoggles.smssync.mail;
 import android.content.Context;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
+
 import com.zegoggles.smssync.R;
 
 import java.util.HashSet;
@@ -10,16 +11,18 @@ import java.util.Set;
 
 import static android.Manifest.permission.READ_CALL_LOG;
 import static android.Manifest.permission.READ_CONTACTS;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.READ_SMS;
 import static android.content.pm.PackageManager.PERMISSION_DENIED;
 
 public enum DataType {
-    SMS     (R.string.sms,     R.string.sms_with_field,  PreferenceKeys.IMAP_FOLDER,         Defaults.SMS_FOLDER,     PreferenceKeys.BACKUP_SMS,      Defaults.SMS_BACKUP_ENABLED,     PreferenceKeys.RESTORE_SMS,     Defaults.SMS_RESTORE_ENABLED,     PreferenceKeys.MAX_SYNCED_DATE_SMS, new String[]{READ_SMS, READ_CONTACTS}),
-    MMS     (R.string.mms,     R.string.mms_with_field,  PreferenceKeys.IMAP_FOLDER,         Defaults.SMS_FOLDER,     PreferenceKeys.BACKUP_MMS,      Defaults.MMS_BACKUP_ENABLED,     null,                           Defaults.MMS_RESTORE_ENABLED,     PreferenceKeys.MAX_SYNCED_DATE_MMS, new String[]{READ_SMS, READ_CONTACTS}),
-    CALLLOG (R.string.calllog, R.string.call_with_field, PreferenceKeys.IMAP_FOLDER_CALLLOG, Defaults.CALLLOG_FOLDER, PreferenceKeys.BACKUP_CALLLOG,  Defaults.CALLLOG_BACKUP_ENABLED, PreferenceKeys.RESTORE_CALLLOG, Defaults.CALLLOG_RESTORE_ENABLED, PreferenceKeys.MAX_SYNCED_DATE_CALLLOG,
-        // READ_CALL_LOG was introduced in API level 16 (Jelly Bean), previously part of READ_CONTACTS
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN ? new String[]{ READ_CONTACTS, READ_CALL_LOG } : new String[]{ READ_CONTACTS }
-    );
+    SMS(R.string.sms, R.string.sms_with_field, PreferenceKeys.IMAP_FOLDER, Defaults.SMS_FOLDER, PreferenceKeys.BACKUP_SMS, Defaults.SMS_BACKUP_ENABLED, PreferenceKeys.RESTORE_SMS, Defaults.SMS_RESTORE_ENABLED, PreferenceKeys.MAX_SYNCED_DATE_SMS, new String[]{READ_SMS, READ_CONTACTS}),
+    MMS(R.string.mms, R.string.mms_with_field, PreferenceKeys.IMAP_FOLDER, Defaults.SMS_FOLDER, PreferenceKeys.BACKUP_MMS, Defaults.MMS_BACKUP_ENABLED, null, Defaults.MMS_RESTORE_ENABLED, PreferenceKeys.MAX_SYNCED_DATE_MMS, new String[]{READ_SMS, READ_CONTACTS}),
+    CALLLOG(R.string.calllog, R.string.call_with_field, PreferenceKeys.IMAP_FOLDER_CALLLOG, Defaults.CALLLOG_FOLDER, PreferenceKeys.BACKUP_CALLLOG, Defaults.CALLLOG_BACKUP_ENABLED, PreferenceKeys.RESTORE_CALLLOG, Defaults.CALLLOG_RESTORE_ENABLED, PreferenceKeys.MAX_SYNCED_DATE_CALLLOG,
+            // READ_CALL_LOG was introduced in API level 16 (Jelly Bean), previously part of READ_CONTACTS
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN ? new String[]{READ_CONTACTS, READ_CALL_LOG} : new String[]{READ_CONTACTS}
+    ),
+    WHATSAPP(R.string.whatsapp, R.string.whatsapp_with_field, PreferenceKeys.IMAP_FOLDER_WHATSAPP, Defaults.WHATAPP_FOLDER, PreferenceKeys.BACKUP_WHATSAPP, Defaults.WHATSAPP_BACKUP_ENABLED, null, Defaults.WHATSAPP_RESTORE_ENABLED, PreferenceKeys.MAX_SYNCED_DATE_WHATSAPP, new String[]{READ_EXTERNAL_STORAGE});
 
     public final int resId;
     public final int withField;
@@ -67,10 +70,12 @@ public enum DataType {
     public static class PreferenceKeys {
         static final String IMAP_FOLDER = "imap_folder";
         static final String IMAP_FOLDER_CALLLOG = "imap_folder_calllog";
+        static final String IMAP_FOLDER_WHATSAPP = "imap_folder_whatsapp";
 
         static final String BACKUP_SMS = "backup_sms";
         static final String BACKUP_MMS = "backup_mms";
         static final String BACKUP_CALLLOG = "backup_calllog";
+        static final String BACKUP_WHATSAPP = "backup_whatsapp";
 
         static final String RESTORE_SMS = "restore_sms";
         static final String RESTORE_CALLLOG = "restore_calllog";
@@ -78,26 +83,32 @@ public enum DataType {
         static final String MAX_SYNCED_DATE_SMS = "max_synced_date";
         static final String MAX_SYNCED_DATE_MMS = "max_synced_date_mms";
         static final String MAX_SYNCED_DATE_CALLLOG = "max_synced_date_calllog";
+        static final String MAX_SYNCED_DATE_WHATSAPP = "max_synced_date_whatsapp";
 
-        private PreferenceKeys() {}
+        private PreferenceKeys() {
+        }
     }
 
     /**
      * Defaults for various settings
      */
     public static class Defaults {
-        public static final long   MAX_SYNCED_DATE = -1;
-        static final String SMS_FOLDER     = "SMS";
+        public static final long MAX_SYNCED_DATE = -1;
+        static final String SMS_FOLDER = "SMS";
         static final String CALLLOG_FOLDER = "Call log";
+        static final String WHATAPP_FOLDER = "WhatsApp";
 
-        static final boolean SMS_BACKUP_ENABLED       = true;
-        static final boolean MMS_BACKUP_ENABLED       = true;
-        static final boolean CALLLOG_BACKUP_ENABLED   = false;
+        static final boolean SMS_BACKUP_ENABLED = true;
+        static final boolean MMS_BACKUP_ENABLED = true;
+        static final boolean CALLLOG_BACKUP_ENABLED = false;
+        static final boolean WHATSAPP_BACKUP_ENABLED = false;
 
-        static final boolean SMS_RESTORE_ENABLED      = true;
-        static final boolean MMS_RESTORE_ENABLED      = false;
-        static final boolean CALLLOG_RESTORE_ENABLED  = true;
+        static final boolean SMS_RESTORE_ENABLED = true;
+        static final boolean MMS_RESTORE_ENABLED = false;
+        static final boolean CALLLOG_RESTORE_ENABLED = true;
+        static final boolean WHATSAPP_RESTORE_ENABLED = false;
 
-        private Defaults() {}
+        private Defaults() {
+        }
     }
 }
