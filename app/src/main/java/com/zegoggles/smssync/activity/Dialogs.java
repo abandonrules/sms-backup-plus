@@ -24,11 +24,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatDialogFragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -49,7 +51,6 @@ import static android.R.string.cancel;
 import static android.R.string.ok;
 import static android.R.string.yes;
 import static android.content.DialogInterface.BUTTON_NEGATIVE;
-import static com.zegoggles.smssync.activity.MainActivity.REQUEST_CHANGE_DEFAULT_SMS_PACKAGE;
 import static com.zegoggles.smssync.activity.MainActivity.REQUEST_WEB_AUTH;
 import static com.zegoggles.smssync.activity.events.PerformAction.Actions.Backup;
 import static com.zegoggles.smssync.activity.events.PerformAction.Actions.BackupSkip;
@@ -60,7 +61,7 @@ public class Dialogs {
         MISSING_CREDENTIALS(MissingCredentials.class),
         INVALID_IMAP_FOLDER(InvalidImapFolder.class),
         CONFIRM_ACTION(ConfirmAction.class),
-        SMS_DEFAULT_PACKAGE_CHANGE(SmsDefaultPackage.class),
+        SMS_DEFAULT_PACKAGE_CHANGE(SmsRequestDefaultPackage.class),
         // menu
         ABOUT(About.class),
         RESET(Reset.class),
@@ -77,8 +78,12 @@ public class Dialogs {
             this.fragment = fragment;
         }
 
-        public BaseFragment instantiate(Context context, @Nullable Bundle args) {
-            return (BaseFragment) Fragment.instantiate(context, fragment.getName(), args);
+        public BaseFragment instantiate(FragmentManager fragmentManager, @Nullable Bundle args) {
+            Fragment fragment = fragmentManager.getFragmentFactory().instantiate(
+                    getClass().getClassLoader(),
+                    this.fragment.getName());
+            fragment.setArguments(args);
+            return (BaseFragment) fragment;
         }
     }
 
@@ -94,17 +99,12 @@ public class Dialogs {
     }
 
     public static class MissingCredentials extends BaseFragment {
-        static final String USE_XOAUTH = "use_xoauth";
-
         @Override @NonNull
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            final boolean useXOAuth = getArguments().getBoolean(USE_XOAUTH);
-            final String title = getString(R.string.ui_dialog_missing_credentials_title);
-            final String msg = useXOAuth ?
-                    getString(R.string.ui_dialog_missing_credentials_msg_xoauth) :
-                    getString(R.string.ui_dialog_missing_credentials_msg_plain);
-
-            return createMessageDialog(title, msg, ic_dialog_alert);
+            return createMessageDialog(
+                getString(R.string.ui_dialog_missing_credentials_title),
+                getString(R.string.ui_dialog_missing_credentials_msg_plain),
+                ic_dialog_alert);
         }
     }
 
@@ -325,9 +325,7 @@ public class Dialogs {
         }
     }
 
-    public static class SmsDefaultPackage extends BaseFragment {
-        static final String INTENT = "intent";
-
+    public static class SmsRequestDefaultPackage extends BaseFragment {
         @Override @NonNull
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             return new AlertDialog.Builder(getContext())
@@ -335,16 +333,13 @@ public class Dialogs {
                 .setIcon(ic_dialog_info)
                 .setPositiveButton(ok, new OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        requestDefaultSmsPackageChange();
+                        if (getActivity() instanceof MainActivity) {
+                            ((MainActivity)getActivity()).requestDefaultSmsPackageChange();
+                        }
                     }
                 })
                 .setMessage(R.string.ui_dialog_sms_default_package_change_msg)
                 .create();
-        }
-
-        private void requestDefaultSmsPackageChange() {
-            final Intent intent = getArguments().getParcelable(INTENT);
-            getActivity().startActivityForResult(intent, REQUEST_CHANGE_DEFAULT_SMS_PACKAGE);
         }
     }
 }
